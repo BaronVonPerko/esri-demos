@@ -4,10 +4,12 @@ require([
     "esri/widgets/Sketch/SketchViewModel",
     "esri/Graphic",
     "esri/layers/GraphicsLayer",
+    "esri/geometry/geometryEngine",
     "dojo/domReady!"
 ], function(
     MapView, Map,
-    SketchViewModel, Graphic, GraphicsLayer
+    SketchViewModel, Graphic, GraphicsLayer,
+    GeometryEngine
 ) {
 
     // GraphicsLayer to hold graphics created via sketch view model
@@ -30,12 +32,26 @@ require([
         layer: graphicsLayer
     });
 
-    view.when(function() {
+    view.when( () => {
         sketch.create('polygon');
     });
 
-    sketch.on('create-complete', function(event) {
-        console.log(event);
+    sketch.on('create-complete', event => {
+        const graphic = new Graphic({
+            geometry: event.geometry,
+            symbol: sketch.graphic.symbol
+        });
+
+        graphicsLayer.graphics.items.forEach(existingGraphic => {
+            let disjoint = GeometryEngine.disjoint(event.geometry, existingGraphic.geometry);
+            if(!disjoint) alert('NO!');
+        });
+
+        graphicsLayer.add(graphic);
+    });
+
+    view.on('click', () => {
+        sketch.create('polygon');
     });
 
 });
