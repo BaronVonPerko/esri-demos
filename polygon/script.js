@@ -6,7 +6,7 @@ require([
     "esri/layers/GraphicsLayer",
     "esri/geometry/geometryEngine",
     "dojo/domReady!"
-], function(
+], function (
     MapView, Map,
     SketchViewModel, Graphic, GraphicsLayer,
     GeometryEngine
@@ -24,7 +24,7 @@ require([
         container: "viewDiv",
         map: map,
         zoom: 9,
-        center: [15,65],
+        center: [15, 65],
     });
 
     var sketch = new SketchViewModel({
@@ -32,22 +32,25 @@ require([
         layer: graphicsLayer
     });
 
-    view.when( () => {
+    view.when(() => {
         sketch.create('polygon');
     });
 
     sketch.on('create-complete', event => {
-        const graphic = new Graphic({
-            geometry: event.geometry,
-            symbol: sketch.graphic.symbol
-        });
+        let symbol = sketch.graphic.symbol;
+        symbol.color = [0,0,0,0.3];
 
         graphicsLayer.graphics.items.forEach(existingGraphic => {
             let disjoint = GeometryEngine.disjoint(event.geometry, existingGraphic.geometry);
-            if(!disjoint) alert('NO!');
+            if (!disjoint) {
+                symbol.color = [255,0,0, 0.5];
+            }
         });
 
-        graphicsLayer.add(graphic);
+        graphicsLayer.add(new Graphic({
+            geometry: event.geometry,
+            symbol
+        }));
     });
 
     view.on('click', () => {
