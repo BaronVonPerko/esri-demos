@@ -50,7 +50,13 @@ require([
     });
 
     view.on('click', (event) => {
-        console.log(event);
+        view.hitTest(event).then(response => {
+            // console.log(response.results);
+            if(response.results) {
+                console.log(response.results[0].graphic);
+                sketch.update(response.results[0].graphic);
+            }
+        });
         sketch.create('polygon');
     });
 
