@@ -25,6 +25,8 @@ export default {
         view.on('click', event => {
             let lat = event.mapPoint.latitude;
             let long = event.mapPoint.longitude;
+
+            this.$root.$emit('mapClicked', {lat, long});
         });
       });
   }
