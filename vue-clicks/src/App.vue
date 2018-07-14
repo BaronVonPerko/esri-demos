@@ -27,6 +27,7 @@ export default {
   display: flex;
   color: #2c3e50;
   margin-top: 60px;
+  min-height: 600px;
 }
 .half {
   width: 50%;
