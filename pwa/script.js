@@ -19,7 +19,12 @@ require([
     // Create an instance of the Track widget
     // and add it to the view's UI
     var track = new Track({
-        view: view
+        view: view,
+        geolocationOptions: {
+            maximumAge: 0,
+            timeout: 0,
+            enableHighAccuracy: true
+        }
     });
     view.ui.add(track, "top-left");
 
