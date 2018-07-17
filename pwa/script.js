@@ -35,6 +35,7 @@ require([
             timeout: 500,
             enableHighAccuracy: true
         },
+        useHeadingEnabled: false,
     });
     view.ui.add(track, "top-left");
 
