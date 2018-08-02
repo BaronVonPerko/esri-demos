@@ -46,15 +46,29 @@ require([
             symbol: validSymbol,
         });
 
-        graphicsLayer.graphics.items.forEach(existingGraphic => {
-            let disjoint = GeometryEngine.disjoint(event.geometry, existingGraphic.geometry);
-            if (!disjoint) {
-                graphic.symbol = invalidSymbol;
-            }
-        });
+        validateGraphic(graphic);
 
         graphicsLayer.add(graphic);
     });
+
+    sketch.on('move-complete', event => validateGraphic(event.graphic));
+    sketch.on('reshape-complete', event => validateGraphic(event.graphic));
+    sketch.on('rotate-complete', event => validateGraphic(event.graphic));
+    sketch.on('scale-complete', event => validateGraphic(event.graphic));
+
+    function validateGraphic(graphic) {
+        for (const existingGraphic of graphicsLayer.graphics.items) {
+            let disjoint = graphic.geometry == existingGraphic.geometry ? true : GeometryEngine.disjoint(graphic.geometry, existingGraphic.geometry);
+            if (!disjoint) {
+                console.log('invalid');
+                graphic.symbol = invalidSymbol;
+                return;
+            } else {
+                console.log('valid');
+                graphic.symbol = validSymbol;
+            }
+        }
+    }
 
     view.on('click', (event) => {
         let isUpdate = false;
