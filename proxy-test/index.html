@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>Track current location - 4.8</title>
+
+    <style>
+        html,
+        body,
+        #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.8/esri/css/main.css">
+    <script src="https://js.arcgis.com/4.8/"></script>
+
+    <script>
+        require([
+            "esri/widgets/Track",
+            "esri/views/MapView",
+            "esri/WebMap",
+            "esri/config",
+            "dojo/domReady!pwa/index"
+        ], function(
+            Track, MapView, WebMap, Config
+        ) {
+
+            Config.portalUrl = "https://cwwapp1454.servers.windstream.com/portal";
+
+            let map = new WebMap({
+                portalItem: {
+                    id: "05b5b12e814b4df2bfe28d6dc6cad3be"
+                }
+            });
+
+            let view = new MapView({
+                map,
+                container: "viewDiv"
+            });
+
+            view.when(function() {
+                //
+            });
+        });
+    </script>
+</head>
+
+<body>
+<div id="viewDiv"></div>
+</body>
+
+</html>
